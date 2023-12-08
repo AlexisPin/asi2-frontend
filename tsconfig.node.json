@@ -17,7 +17,7 @@
     "skipDefaultLibCheck": true,
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true,
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
   "include": ["vite.config.ts"]
 }
