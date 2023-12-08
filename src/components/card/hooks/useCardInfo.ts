@@ -13,7 +13,5 @@ export function useCardInfo({id}:{id:number}) {
         .catch(error => console.error(error));
     }, [id]);
   
-    return (
-        card
-    );   
+    return card;   
 };
