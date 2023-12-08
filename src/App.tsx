@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import './App.css'
-import { Input } from './components/form/input'
+import './App.css';
+
+import { CardList } from './components/cardList/CardList';
 
 function App() {
 
   return (
     <>
-     <Input />
+     <CardList />
     </>
   )
 }
