@@ -9,13 +9,14 @@ export const Menu = () => {
     const navigate = useNavigate();
 
     return (
+        
         <Stack
             direction="column"
-            justifyContent="flex-start"
+            alignContent="center"
+            alignItems="center"
             spacing={2}
             divider={<Divider orientation="horizontal" flexItem />}
-            maxWidth={"300px"}
-            marginTop={"10px"}
+            margin={"10px"}
         >
             <Button
                 size={"large"}
@@ -47,5 +48,3 @@ export const Menu = () => {
         </Stack>
     )
 }
-
-// return "Mon tomodachi Jardin Ilaplu !"
