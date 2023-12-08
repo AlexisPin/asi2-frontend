@@ -1,6 +1,6 @@
 import './App.css';
 
-import { CardList } from './components/cardList/CardList';
+import { CardList } from './components/cardList/CardSell';
 
 function App() {
 
