@@ -1,11 +1,16 @@
-import './App.css';
-import { Login } from './pages/login';
+import "./App.css";
+import { Input } from "./components/form/input";
+import { Navigate, Routes } from "react-router";
+import { Route } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <Login />
-    </>
+    <Routes>
+      <Route index path="/" element={<Navigate to={"/login"} replace />} />
+
+      <Route path="/login" element={<Input />} />
+    </Routes>
+
   );
 }
 
