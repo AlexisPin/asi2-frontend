@@ -1,12 +1,16 @@
 import { Box, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useUser } from '../hooks/useUser';
 import { update_current_user_id } from '../slices/userSlice';
+import { AppState } from '~/store';
+import { Navigate } from 'react-router';
 
-export const Login = () => {
+const Login = () => {
   const [login, setLogin] = useState<'login' | 'register'>('login');
+  const user = useSelector((state: AppState) => state.user.current_user);
+
   const dispatch = useDispatch();
   useUser();
 
@@ -36,13 +40,11 @@ export const Login = () => {
         lastName: surname,
         surName: surname,
         email: surname,
-        cardList: [0]
-
+        cardList: [0],
       };
       handleRegister(body);
     }
   };
-
 
   const handleLogin = async (body: unknown) => {
     const response = await fetch('http://localhost:8083/auth', {
@@ -56,7 +58,7 @@ export const Login = () => {
       throw new Error('Invalid credentials');
     }
     return (await response.json()) as number;
-  }
+  };
 
   const handleRegister = async (body: unknown) => {
     const response = await fetch('http://localhost:8083/user', {
@@ -69,9 +71,12 @@ export const Login = () => {
     if (!response.ok) {
       throw new Error('Something went wrong');
     }
-    return (await response.json())
-  }
+    return await response.json();
+  };
 
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -155,3 +160,5 @@ export const Login = () => {
     </Container>
   );
 };
+
+export default Login;

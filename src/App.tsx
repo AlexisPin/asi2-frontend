@@ -1,26 +1,33 @@
 import './App.css';
 
-import { Navigate, Routes } from 'react-router';
+import { Routes } from 'react-router';
 import { Route } from 'react-router-dom';
 
-import { Login } from './pages/login';
-import { Menu } from './pages/menu/Menu';
-import React from 'react';
-import { CardSell } from './pages/cardSell/CardSell';
-import { CardBuy } from './pages/cardBuy/CardBuy';
+import Main from './components/layout/main';
+import { Suspense } from 'react';
+import { routes } from './boot/router';
+import { splitBy } from './utils/split-routes';
+import { Protected } from './protect/protected';
 
 function App() {
+  const [protectedRoutes, guestRoutes] = splitBy(routes, (route) => route.protected);
+
   return (
-    <Routes>
-      <Route index path="/" element={<Navigate to={'/login'} replace />} />
+    <Main>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          {guestRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
 
-      <Route path="/login" element={<Login />} />
-
-      <Route path="/menu" element={<Menu />} />
-      <Route path="/sell" element={<CardSell />} />
-      <Route path="/buy" element={<CardBuy />} />
-      <Route path="/play" element={<Login />} />
-    </Routes>
+          <Route element={<Protected />}>
+            {protectedRoutes.map((route) => (
+              <Route key={route.path} path={route.path} element={route.element} />
+            ))}
+          </Route>
+        </Routes>
+      </Suspense>
+    </Main>
   );
 }
 
