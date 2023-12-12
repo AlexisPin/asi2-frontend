@@ -6,11 +6,11 @@ import { Box } from '@mui/material';
 import GameCard from '../../components/card/GameCard';
 import { TableCard } from '../../components/tableCard/TableCard';
 import { update_shop_state } from '../../slices/shopSlice';
-import { useGetUserCard } from './hooks/useGetUserCard';
 import { CardType } from '../../type/card';
+import { useGetCardToSell } from '../cardSell/hooks/useGetCardToSell';
 
-export const CardBuy = () => {
-  const cardsToSell: CardType[] = useGetUserCard();
+const CardBuy = () => {
+  const cardsToSell: CardType[] = useGetCardToSell();
 
   const [selectedCard, setSelectedCard] = useState(-1);
 
@@ -34,3 +34,5 @@ export const CardBuy = () => {
     </>
   );
 };
+
+export default CardBuy;

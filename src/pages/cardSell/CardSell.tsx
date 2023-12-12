@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux';
 import { Box } from '@mui/material';
 
 import GameCard from '../../components/card/GameCard';
-import { useGetCardToSell } from './hooks/useGetCardToSell';
 import { TableCard } from '../../components/tableCard/TableCard';
 import { update_shop_state } from '../../slices/shopSlice';
 import { CardType } from '../../type/card';
+import { useGetUserCard } from '../cardBuy/hooks/useGetUserCard';
 
-export const CardSell = () => {
-  const cardsToSell: CardType[] = useGetCardToSell();
+const CardSell = () => {
+  const cardsToSell: CardType[] = useGetUserCard();
 
   const [selectedCard, setSelectedCard] = useState(-1);
 
@@ -34,3 +34,5 @@ export const CardSell = () => {
     </>
   );
 };
+
+export default CardSell;

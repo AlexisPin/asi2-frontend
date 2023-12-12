@@ -5,16 +5,35 @@ import { AppState } from '../../../store';
 export const useGetUserCard = () => {
   const [cards, setCards] = useState([]);
 
-  const currentUser = useSelector((state: AppState) => {
-    return state.user.current_user;
+  const user_id = useSelector((state: AppState) => {
+    return state.user.current_user_id;
   });
 
   useEffect(() => {
-    fetch(`http://localhost:8083/user/${currentUser.id}`)
+    const card_ids = fetch(`http://localhost:8083/user/${user_id}`)
       .then((response) => response.json())
-      .then((json) => setCards(json))
+      .then((json) => {
+        // TODO validate json
+        return json.cardList;
+      })
       .catch((error) => console.error(error));
-  }, [currentUser.id]);
+
+    card_ids.then((ids) => {
+      Promise.all(
+        ids.map(async (id: number) => {
+          try {
+            const response = await fetch(`http://localhost:8083/card/${id}`);
+            return await response.json();
+          } catch (error) {
+            return console.error(error);
+          }
+        }),
+      ).then((cards) => {
+        // TODO validate cards
+        setCards(cards);
+      });
+    });
+  }, [user_id]);
 
   return cards;
 };
