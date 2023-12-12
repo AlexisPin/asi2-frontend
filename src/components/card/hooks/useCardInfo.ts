@@ -7,11 +7,11 @@ export function useCardInfo({id}:{id:number}) {
     const [card, setCard] = useState([]);
 
     useEffect(() => {
-      fetch(`http://tp.cpe.fr:8083/card/${id}`)
+      fetch(`http://localhost:8083/card/${id}`)
         .then(response => response.json())
         .then(json => setCard(json))
         .catch(error => console.error(error));
     }, [id]);
   
     return card;   
-};
+}
