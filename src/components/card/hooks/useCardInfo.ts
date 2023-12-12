@@ -1,17 +1,17 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
+import { CardType } from '../../../type/card';
 
-export function useCardInfo({id}:{id:number}) {
-    const [card, setCard] = useState([]);
+export const useCardInfo = ({ id }: { id: number }): CardType | undefined => {
+  const [card, setCard] = useState<CardType | undefined>(undefined);
 
-    useEffect(() => {
-      fetch(`http://tp.cpe.fr:8083/card/${id}`)
-        .then(response => response.json())
-        .then(json => setCard(json))
-        .catch(error => console.error(error));
-    }, [id]);
-  
-    return card;   
+  useEffect(() => {
+    fetch(`http://tp.cpe.fr:8083/card/${id}`)
+      .then((response) => response.json())
+      .then((json) => {
+        setCard(json);
+      })
+      .catch((error) => console.error(error));
+  }, [id]);
+
+  return card;
 };

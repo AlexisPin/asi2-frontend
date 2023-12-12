@@ -1,9 +1,10 @@
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 
-import { useCardInfo } from './hooks/useCardInfo';
-
 import { useSelector } from 'react-redux';
 import React from 'react';
+import { AppState } from '../../store';
+import { CardType } from '../../type/card';
+import { useCardInfo } from './hooks/useCardInfo';
 
 interface CardProps {
   id: number;
@@ -11,13 +12,13 @@ interface CardProps {
 }
 
 export const GameCard = ({ id }: CardProps) => {
-  const cardInfo: any = useCardInfo({ id });
+  const card: CardType | undefined = useCardInfo({ id });
 
-  const shopState = useSelector((state) => {
+  const shopState = useSelector((state: AppState) => {
     return state.shop.shop_state;
   });
 
-  if (!id) {
+  if (!card) {
     return null;
   }
   return (
@@ -29,8 +30,8 @@ export const GameCard = ({ id }: CardProps) => {
     >
       <CardMedia
         sx={{ height: 200 }}
-        image={cardInfo.imgUrl ?? 'https://daveceddia.com/images/beware-undefined-state.jpg'}
-        title={cardInfo.name}
+        image={card.imgUrl ?? 'https://daveceddia.com/images/beware-undefined-state.jpg'}
+        title={card.name}
       />
       <CardContent>
         <Box
@@ -40,17 +41,17 @@ export const GameCard = ({ id }: CardProps) => {
           }}
         >
           <Typography variant="body2" color="text.primary">
-            {'Energy: ' + cardInfo?.energy}
+            {'Energy: ' + card?.energy}
           </Typography>
           <Typography variant="body2" color="text.primary">
-            {'HP: ' + cardInfo?.hp}
+            {'HP: ' + card?.hp}
           </Typography>
         </Box>
         <Typography gutterBottom variant="h5" component="div">
-          {cardInfo.name ?? 'undefined'}
+          {card.name ?? 'undefined'}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {cardInfo?.description}
+          {card?.description}
         </Typography>
       </CardContent>
       <CardActions
@@ -60,7 +61,7 @@ export const GameCard = ({ id }: CardProps) => {
         }}
       >
         <Button variant="contained" size="medium">
-          {shopState === 'buy' ? 'Buy ($' + cardInfo.price + ')' : 'Sell'}
+          {shopState === 'buy' ? 'Buy ($' + card.price + ')' : 'Sell'}
         </Button>
       </CardActions>
     </Card>

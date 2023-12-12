@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Box } from '@mui/material';
-import { GridRowsProp } from '@mui/x-data-grid';
 
 import GameCard from '../../components/card/GameCard';
 import { useGetCardToSell } from './hooks/useGetCardToSell';
 import { TableCard } from '../../components/tableCard/TableCard';
 import { update_shop_state } from '../../slices/shopSlice';
+import { CardType } from '../../type/card';
 
 export const CardSell = () => {
-  const cardsToSell: GridRowsProp = useGetCardToSell();
+  const cardsToSell: CardType[] = useGetCardToSell();
 
   const [selectedCard, setSelectedCard] = useState(-1);
 
