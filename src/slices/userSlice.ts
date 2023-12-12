@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../type/User';
+import { User } from '../type/user';
 
 export const userSlice = createSlice({
   name: 'User',

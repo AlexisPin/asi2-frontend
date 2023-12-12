@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Card } from '../type/card';
 
 export const cardSlice = createSlice({
-  name: 'Robot',
+  name: 'Card',
   initialState: {
     current_card: {} as Card,
   },
