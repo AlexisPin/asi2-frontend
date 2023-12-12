@@ -1,29 +1,77 @@
 import { Box, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import React from 'react';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useUser } from '../hooks/useUser';
+import { update_current_user_id } from '../slices/userSlice';
 
 export const Login = () => {
   const [login, setLogin] = useState<'login' | 'register'>('login');
-  const handleSubmit = (event: any) => {
+  const dispatch = useDispatch();
+  useUser();
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     let body = {};
+    const password = data.get('password');
+    const rePassword = data.get('re-password');
+    const surname = data.get('surname');
+
     if (login == 'login') {
       body = {
-        surname: data.get('surname'),
-        password: data.get('password'),
+        username: surname,
+        password,
       };
+      const id = await handleLogin(body);
+      dispatch(update_current_user_id(id));
     } else {
+      if (password !== rePassword) {
+        throw new Error("Passwords don't match");
+      }
       body = {
-        name: data.get('name'),
-        surname: data.get('surname'),
-        password: data.get('password'),
-        confirm_password: data.get('re-password'),
+        login: data.get('name'),
+        pwd: password,
+        account: 0,
+        lastName: surname,
+        surName: surname,
+        email: surname,
+        cardList: [0]
+
       };
+      handleRegister(body);
     }
-    console.log(body);
   };
+
+
+  const handleLogin = async (body: unknown) => {
+    const response = await fetch('http://localhost:8083/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      throw new Error('Invalid credentials');
+    }
+    return (await response.json()) as number;
+  }
+
+  const handleRegister = async (body: unknown) => {
+    const response = await fetch('http://localhost:8083/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      throw new Error('Something went wrong');
+    }
+    return (await response.json())
+  }
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -67,7 +115,7 @@ export const Login = () => {
             name="password"
             label="Password"
             type="password"
-            id="surname"
+            id="password"
             autoComplete="Password"
           />
           {login == 'register' && (
@@ -78,7 +126,7 @@ export const Login = () => {
               name="re-password"
               label="Re-Password"
               type="password"
-              id="surname"
+              id="re-password"
               autoComplete="Confirm Password"
             />
           )}

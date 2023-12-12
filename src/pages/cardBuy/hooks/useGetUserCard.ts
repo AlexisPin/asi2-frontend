@@ -10,7 +10,7 @@ export const useGetUserCard = () => {
   });
 
   useEffect(() => {
-    fetch(`http://tp.cpe.fr:8083/user/${currentUser.id}`)
+    fetch(`http://localhost:8083/user/${currentUser.id}`)
       .then((response) => response.json())
       .then((json) => setCards(json))
       .catch((error) => console.error(error));
