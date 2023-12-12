@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Card } from '../type/card';
+import { CardType } from '../type/card';
 
 export const cardSlice = createSlice({
   name: 'Card',
   initialState: {
-    current_card: {} as Card,
+    current_card: {} as CardType,
   },
   reducers: {
-    update_selected_card: (state, action: PayloadAction<Card>) => {
+    update_selected_card: (state, action: PayloadAction<CardType>) => {
       state.current_card = action.payload;
     },
   },

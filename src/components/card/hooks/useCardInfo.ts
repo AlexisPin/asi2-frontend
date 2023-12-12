@@ -1,10 +1,9 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
+import { CardType } from '../../../type/card';
 
-export function useCardInfo({id}:{id:number}) {
-    const [card, setCard] = useState([]);
+export const useCardInfo = ({ id }: { id: number }): CardType | undefined => {
+  const [card, setCard] = useState<CardType | undefined>(undefined);
+
 
     useEffect(() => {
       fetch(`http://localhost:8083/card/${id}`)
@@ -15,3 +14,4 @@ export function useCardInfo({id}:{id:number}) {
   
     return card;   
 }
+

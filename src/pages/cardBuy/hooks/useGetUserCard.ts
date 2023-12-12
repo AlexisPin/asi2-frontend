@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { AppState } from '../../../store';
 
 export const useGetUserCard = () => {
   const [cards, setCards] = useState([]);
 
-  const currentUser = useSelector((state) => {
+  const currentUser = useSelector((state: AppState) => {
     return state.user.current_user;
   });
 
