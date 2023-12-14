@@ -1,8 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../type/user';
+import {
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
+
+import { UserType } from '../type/user';
 
 type UserState = {
-  current_user: User | null;
+  current_user: UserType | null;
   current_user_id: number;
 };
 
@@ -15,7 +19,7 @@ export const userSlice = createSlice({
   name: 'User',
   initialState,
   reducers: {
-    update_current_user: (state, action: PayloadAction<User>) => {
+    update_current_user: (state, action: PayloadAction<UserType>) => {
       state.current_user = action.payload;
     },
     update_current_user_id: (state, action: PayloadAction<number>) => {
