@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../store';
+import { CardType } from '~/type/card';
 
 export const useGetUserCard = () => {
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState<CardType[]>([]);
 
   const user_id = useSelector((state: AppState) => {
     return state.user.current_user_id;

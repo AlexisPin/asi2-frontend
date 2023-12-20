@@ -96,5 +96,3 @@ export const GameCard = ({ id }: { id: number }) => {
     </Card>
   );
 };
-
-export default GameCard;
