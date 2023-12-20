@@ -6,7 +6,6 @@ import { Socket } from 'socket.io-client';
 import { AppState } from '~/store';
 import {
   ClientToServerEvents,
-  NotificationType,
   ServerToClientEvents,
 } from '~/type/socket';
 
@@ -52,8 +51,8 @@ export const Header = ({
     setUserDiscussionId(e.target.value);
   };
 
-  socket.on('notification', (e: NotificationType) => {
-    if ((e = 'users_change')) {
+  socket.on('notification', (e) => {
+    if ((e === 'users_change')) {
       setUserChanged(true);
     }
   });

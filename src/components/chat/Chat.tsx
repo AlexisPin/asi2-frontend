@@ -37,34 +37,25 @@ export const Chat = ({
   socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [userDiscussionId, setUserDiscussionId] = useState(null);
 
   const userId = useSelector((state: AppState) => state.user.current_user_id);
 
   const [messages, setMessages] = useState<messageType[]>([]);
 
-  const initMessages = useGetMessages({ userId1: userId, userId2: userDiscussionId });
-  const handleSend = useSendMessage;
+  
+  const historyMessages = useGetMessages(userId, userDiscussionId);
 
-  // Load history messages when change of discussion
+  //Load history messages
   useEffect(() => {
-    console.log(initMessages, userId, userDiscussionId)
-    setMessages(initMessages)
-  }, [userDiscussionId]);
-
-  const handleInputChange = (event: any) => {
-    setInput(event.target.value);
-  };
-
-  const resetInputValue = () => {
-    setInput('');
-  };
+      setMessages(historyMessages);
+  }, [userDiscussionId,historyMessages]);
 
   const handleSendMessage = () => {
     if (userDiscussionId) {
-      resetInputValue();
-      handleSend({ senderId: userId, receiverId: userDiscussionId, message: input });
+      setInput("");
+      useSendMessage({ senderId: userId, receiverId: userDiscussionId, message: input });
     }
   }
 
@@ -73,7 +64,7 @@ export const Chat = ({
       const formatMessage = {
         date: new Date(webSocketMessage.timestamp),
         content: webSocketMessage.content,
-        userSenderId: webSocketMessage.sender_id,
+        senderId: webSocketMessage.sender_id,
         conversationId: webSocketMessage.conversation_id,
       } satisfies messageType;
 
@@ -84,7 +75,7 @@ export const Chat = ({
     return () => {
       socket.off('chat_message');
     };
-  }, [socket]);
+  }, []);
 
   if (!isOpen) {
     return (
@@ -133,9 +124,9 @@ export const Chat = ({
         socket={socket}
       />
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
-        {messages.length ? messages.map((message, index) => (
+        {messages.map((message, index) => (
           <Message key={index} message={message} />
-        )): null}
+        ))}
       </Box>
       <Box sx={{ p: 2, backgroundColor: '#ecf0f5' }}>
         <Grid container spacing={2}>
@@ -144,7 +135,7 @@ export const Chat = ({
               fullWidth
               placeholder="Type a message"
               value={input}
-              onChange={handleInputChange}
+              onChange={(e) => setInput(e.target.value)}
               onKeyUp={(e) => {
                 if (e.key === "Enter") {
                   handleSendMessage()

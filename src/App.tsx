@@ -17,7 +17,7 @@ import { socket } from './socket';
 import { AppState } from './store';
 import { splitBy } from './utils/split-routes';
 
-const clientSocket = socket;
+export const clientSocket = socket;
 
 function App() {
   const [protectedRoutes, guestRoutes] = splitBy(routes, (route) => route.protected);
@@ -38,7 +38,7 @@ function App() {
 
   return (
     <Main>
-      {userId !== -1 ? <Chat socket={clientSocket} /> : null}
+      {userId !== -1 && <Chat socket={clientSocket} /> }
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           {guestRoutes.map((route) => (

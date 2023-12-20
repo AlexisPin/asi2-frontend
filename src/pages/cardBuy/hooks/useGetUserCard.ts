@@ -7,7 +7,7 @@ export const useGetUserCard = () => {
   const [cards, setCards] = useState<CardType[]>([]);
 
   const user_id = useSelector((state: AppState) => {
-    return state.user.current_user_id;
+    return state.user.current_user;
   });
 
   useEffect(() => {

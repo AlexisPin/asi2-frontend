@@ -11,7 +11,7 @@ import {
 
 export const Message = ({message}:{message: messageType}) => {
     const userId = useSelector((state: AppState) => state.user.current_user_id);
-    const isUser = message.userSenderId === userId;
+    const isUser = message.senderId === userId;
   
     return (
       <Box sx={{
