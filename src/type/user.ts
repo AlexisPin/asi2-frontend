@@ -1,4 +1,6 @@
-export type User = {
+import { CardType } from './card';
+
+export type UserType = {
   id: number;
   money: number;
   cardList: [CardType];  
@@ -8,6 +10,15 @@ export type User = {
   lastName:	string;
   surName:	string;
   email:	string;
+}
+
+export type User = {
+  id: number;
+  name: string;
+  surName: string;
+  profile_picture: string;
+  money: number;
+  cardList: CardType[]
 };
 
 export type ChatUserType = {
