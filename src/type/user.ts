@@ -1,6 +1,4 @@
-import { CardType } from './card';
-
-export type UserType = {
+export type User = {
   id: number;
   money: number;
   cardList: [CardType];  

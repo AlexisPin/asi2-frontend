@@ -9,7 +9,7 @@ const Buy = lazy(() => import('~/pages/cardBuy/CardBuy'));
 
 const Sell = lazy(() => import('~/pages/cardSell/CardSell'));
 
-//const Play = lazy(() => import('~/pages/play'));
+const PlayPage = lazy(() => import('~/pages/playPage/PlayPage'));
 
 type CustomRouteObject = RouteObject & { protected: boolean };
 
@@ -42,17 +42,17 @@ export const sellRoutes: CustomRouteObject[] = [
   },
 ];
 
-// export const playRoutes: CustomRouteObject[] = [
-//   {
-//     path: '/play',
-//     element: <Play />,
-//     protected: true,
-//   },
-// ];
+export const playRoutes: CustomRouteObject[] = [
+  {
+    path: '/play',
+    element: <PlayPage />,
+    protected: true,
+  },
+];
 
 export const routes: CustomRouteObject[] = [
   ...rootRoutes,
   ...buyRoutes,
   ...sellRoutes,
-  //...playRoutes,
+  ...playRoutes,
 ];
