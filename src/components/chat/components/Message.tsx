@@ -17,13 +17,13 @@ export const Message = ({message}:{message: messageType}) => {
       <Box sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: isUser ? "flex-start" : "flex-end",
+        alignItems: isUser ? "flex-end" : "flex-start",
       }}> 
       <Typography variant="caption">{dayjs(message.date).format("HH:mm DD/MM/YYYY")}</Typography>
       <Box
         sx={{
           display: "flex",
-          justifyContent: isUser ? "flex-start" : "flex-end",
+          justifyContent: isUser ? "flex-end" : "flex-start",
           mb: 2,
         }}
       >
@@ -31,7 +31,7 @@ export const Message = ({message}:{message: messageType}) => {
           variant="outlined"
           sx={{
             p: 1,
-            backgroundColor: isUser ? "primary" : "secondary",
+            backgroundColor: isUser ? "secondary" : "primary",
           }}
         >
           <Typography variant="body1">{message.content}</Typography>

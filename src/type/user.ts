@@ -11,3 +11,10 @@ export type UserType = {
   surName:	string;
   email:	string;
 };
+
+export type ChatUserType = {
+  id: number;
+  login: string;
+  cardList: number[];
+  account: number;
+}

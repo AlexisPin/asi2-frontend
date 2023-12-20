@@ -3,7 +3,6 @@ import { ReactNode } from 'react';
 import { useLocation } from 'react-router';
 
 import { pagesWithoutLayout } from '../../core/navigation';
-import Chat from '../chat/chat';
 import { Header } from '../header/Header';
 
 const Main = ({ children }: { children: ReactNode }) => {
@@ -17,7 +16,6 @@ const Main = ({ children }: { children: ReactNode }) => {
           <Header />
         </>
       )}
-      <Chat />
       <main>{children}</main>
     </>
   );
