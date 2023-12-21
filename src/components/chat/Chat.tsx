@@ -28,7 +28,7 @@ import { Header } from './components/Header';
 import Message from './components/Message';
 import {
   useGetMessages,
-  useSendMessage,
+  sendMessage,
 } from './hooks/useMessages';
 
 export const Chat = ({
@@ -38,24 +38,23 @@ export const Chat = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
-  const [userDiscussionId, setUserDiscussionId] = useState(null);
+  const [userDiscussionId, setUserDiscussionId] = useState<number | null>(null);
 
   const userId = useSelector((state: AppState) => state.user.current_user_id);
 
   const [messages, setMessages] = useState<messageType[]>([]);
 
-  
   const historyMessages = useGetMessages(userId, userDiscussionId);
 
   //Load history messages
   useEffect(() => {
-      setMessages(historyMessages);
-  }, [userDiscussionId,historyMessages]);
+    setMessages(historyMessages);
+  }, [userDiscussionId, historyMessages]);
 
   const handleSendMessage = () => {
     if (userDiscussionId) {
       setInput("");
-      useSendMessage({ senderId: userId, receiverId: userDiscussionId, message: input });
+      sendMessage({ senderId: userId, receiverId: userDiscussionId, message: input });
     }
   }
 
@@ -67,8 +66,6 @@ export const Chat = ({
         senderId: webSocketMessage.sender_id,
         conversationId: webSocketMessage.conversation_id,
       } satisfies messageType;
-
-      console.log({ formatMessage });
 
       setMessages((prev) => [...prev, formatMessage]);
     });
@@ -93,7 +90,7 @@ export const Chat = ({
       >
         <MessageCircle
           style={{
-            backgroundColor: '#313131',
+            backgroundColor: '#abdbe3',
             padding: '10px',
             borderRadius: '20px',
           }}
@@ -129,7 +126,7 @@ export const Chat = ({
         ))}
       </Box>
       <Box sx={{ p: 2, backgroundColor: '#ecf0f5' }}>
-        <Grid container spacing={2}>
+        <Grid alignItems={'center'} container spacing={2}>
           <Grid item xs={8}>
             <TextField
               fullWidth

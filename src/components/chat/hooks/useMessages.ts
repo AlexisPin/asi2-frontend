@@ -5,7 +5,7 @@ import {
 
 import { messageType } from '~/type/message';
 
-export const useGetMessages = ( userId1 : number, userId2 : number | null ) => {
+export const useGetMessages = (userId1: number, userId2: number | null) => {
   const [data, setData] = useState<messageType[]>([]);
 
   useEffect(() => {
@@ -16,18 +16,18 @@ export const useGetMessages = ( userId1 : number, userId2 : number | null ) => {
           'Content-type': 'application/json',
         },
       })
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((err) => {
-        throw new Error('Something went wrong to send the new message to DB : ', err);
-      });
+        .then((response) => response.json())
+        .then((json) => setData(json))
+        .catch((err) => {
+          throw new Error('Something went wrong to send the new message to DB : ', err);
+        });
     }
   }, [userId1, userId2]);
 
   return data;
 };
 
-export const useSendMessage = ({
+export const sendMessage = ({
   receiverId,
   senderId,
   message,

@@ -1,4 +1,5 @@
 import { Button, Stack } from "@mui/material"
+import { SwordsIcon } from "lucide-react";
 
 export const ActionButtons = () => {
     return (
@@ -11,7 +12,7 @@ export const ActionButtons = () => {
             <Button
                 onClick={() => { alert("Ending Turn..."); }}
                 variant="contained"
-                sx={ { paddingTop: "11px" } }
+                sx={{ paddingTop: "11px" }}
             >
                 End Turn
             </Button>
@@ -19,8 +20,9 @@ export const ActionButtons = () => {
             <Button
                 onClick={() => { alert("Attacking !"); }}
                 variant="contained"
-                sx={ { paddingTop: "11px" } }
+                sx={{ paddingTop: "11px" }}
             >
+                <SwordsIcon size={24} />
                 Attack
             </Button>
         </Stack>

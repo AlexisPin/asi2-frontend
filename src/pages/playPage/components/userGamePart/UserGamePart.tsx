@@ -4,11 +4,9 @@ import { CardDetail } from "./components/CardDetail";
 import { Stack } from "@mui/material";
 import { useState } from "react";
 import { CardType } from "~/type/card";
-import { User } from "~/type/user";
+import { PlayerDto } from "~/type/socket";
 
-
-
-export const UserGamePart = ({cardList, user}: {cardList: CardType[]; user: User}) => {
+export const UserGamePart = ({ cardList, user }: { cardList: CardType[], user: PlayerDto }) => {
 
     const [selectedCard, setSelectedCard] = useState<CardType | undefined>(cardList[0])
 

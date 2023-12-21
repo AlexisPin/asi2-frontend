@@ -3,11 +3,11 @@ import { CardSimple } from "./components/CardSimple";
 import { CardType } from "~/type/card";
 
 
-export const PlayerBoard = ({setSelectedCard, cardList}: {setSelectedCard: (card: CardType) => void; cardList: CardType[]}) => {
+export const PlayerBoard = ({ setSelectedCard, cardList }: { setSelectedCard: (card: CardType) => void; cardList: CardType[] }) => {
 
-    let cardsDisplay = cardList.map(
-        (card) => 
-            <ListItem onClick={ () => setSelectedCard(card)}>
+    const cardsDisplay = cardList.map(
+        (card) =>
+            <ListItem key={card.id} onClick={() => setSelectedCard(card)}>
                 <CardSimple card={card}></CardSimple>
             </ListItem>
     );

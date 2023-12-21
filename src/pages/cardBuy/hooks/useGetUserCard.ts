@@ -6,22 +6,15 @@ import { CardType } from '~/type/card';
 export const useGetUserCard = () => {
   const [cards, setCards] = useState<CardType[]>([]);
 
-  const user_id = useSelector((state: AppState) => {
+  const user = useSelector((state: AppState) => {
     return state.user.current_user;
   });
 
   useEffect(() => {
-    const card_ids = fetch(`http://localhost:8083/user/${user_id}`)
-      .then((response) => response.json())
-      .then((json) => {
-        // TODO validate json
-        return json.cardList;
-      })
-      .catch((error) => console.error(error));
+    const card_ids = user?.cardList || [];
 
-    card_ids.then((ids) => {
       Promise.all(
-        ids.map(async (id: number) => {
+        card_ids.map(async (id: number) => {
           try {
             const response = await fetch(`http://localhost:8083/card/${id}`);
             return await response.json();
@@ -33,8 +26,7 @@ export const useGetUserCard = () => {
         // TODO validate cards
         setCards(cards);
       });
-    });
-  }, [user_id]);
+  }, [user]);
 
   return cards;
 };

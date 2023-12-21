@@ -71,6 +71,7 @@ const Login = () => {
     if (!response.ok) {
       throw new Error('Something went wrong');
     }
+    setLogin('login');
     return await response.json();
   };
 

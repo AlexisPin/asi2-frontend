@@ -22,9 +22,9 @@ import {
 import { useConnectedUsers } from '../hooks/useConnectedUsers';
 
 interface HeaderProps {
-  setIsOpen: Function;
+  setIsOpen: (isOpen: boolean) => void;
   userDiscussionId: number | null;
-  setUserDiscussionId: Function;
+  setUserDiscussionId: (userDiscussionId: number | null) => void;
   socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 }
 
@@ -38,22 +38,22 @@ export const Header = ({
   const connectedUsers = useConnectedUsers(userChanged);
   const userId = useSelector((state: AppState) => state.user.current_user_id);
 
-  let selectItem = connectedUsers.map((user) => 
-      (user.id !== userId) &&
-      <MenuItem value={user.id} key={user.id}>
-        {user.login}
-      </MenuItem>
-    );
+  const selectItem = connectedUsers.map((user) =>
+    (user.id !== userId) &&
+    <MenuItem value={user.id} key={user.id}>
+      {user.login}
+    </MenuItem>
+  );
 
   const handleChangeDiscussion = (e: SelectChangeEvent<number | null>) => {
     if (userDiscussionId) socket.emit('leave_chat_room', userDiscussionId);
     socket.emit('join_chat_room', Number(e.target.value));
-    setUserDiscussionId(e.target.value);
+    setUserDiscussionId(Number(e.target.value));
   };
 
   socket.on('notification', (e) => {
     if ((e === 'users_change')) {
-      setUserChanged(true);
+      setUserChanged((prev) => !prev);
     }
   });
 
@@ -64,7 +64,7 @@ export const Header = ({
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={userDiscussionId}
+          value={userDiscussionId || ''}
           label="userDiscussion"
           onChange={(e) => handleChangeDiscussion(e)}
         >

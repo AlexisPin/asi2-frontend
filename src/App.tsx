@@ -31,7 +31,6 @@ function App() {
     }
 
     return () => {
-      clientSocket.off('login');
       clientSocket.disconnect();
     }
   }, [userId])

@@ -49,7 +49,7 @@ export interface RegisterPlayerDto {
 export interface GameDto {
   id: string;
   turn: number;
-  players: Map<number, PlayerDto>;
+  players: Record<number, PlayerDto>;
 }
 
 
@@ -73,8 +73,8 @@ export type GameState =
         id: number;
         name: string;
         cards: number[];
+        ready: boolean;
       }[];
-      ready: number[];
     }
   }
   | {

@@ -1,11 +1,8 @@
 import { CardType } from "~/type/card"
 import { UserGamePart } from "./userGamePart/UserGamePart"
-import { useSelector } from "react-redux";
-import { AppState } from "~/store";
+import { PlayerDto } from "~/type/socket"
 
-export const EnemyGamePart = ({cardList}: {cardList: CardType[]}) => {
-
-    const user = useSelector((state: AppState) => state.user.current_user);
+export const EnemyGamePart = ({ cardList, user }: { cardList: CardType[], user?: PlayerDto }) => {
 
     if (!user) return null
 

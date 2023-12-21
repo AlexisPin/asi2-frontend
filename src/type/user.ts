@@ -3,7 +3,7 @@ import { CardType } from './card';
 export type UserType = {
   id: number;
   money: number;
-  cardList: [CardType];  
+  cardList: number[];
   login:	string;
   pwd:	string;
   account:	number;

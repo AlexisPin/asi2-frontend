@@ -1,7 +1,8 @@
 import { Card, CardActionArea, CardContent, CardMedia, Divider, ListItem, Stack, Typography } from "@mui/material"
+import { memo } from "react";
 import { CardType } from "~/type/card";
 
-export const CardSimple = ({card}: {card?: CardType}) => {
+export const CardSimple = memo(({ card }: { card?: CardType }) => {
 
     console.log(card)
     if (!card) return null
@@ -12,7 +13,7 @@ export const CardSimple = ({card}: {card?: CardType}) => {
                 <CardMedia
                     component="img"
                     height="140"
-                    image={card.imgUrl}
+                    src={card.imgUrl}
                     alt="card.imagename"
                 />
                 <CardContent>
@@ -43,4 +44,4 @@ export const CardSimple = ({card}: {card?: CardType}) => {
             </CardActionArea>
         </Card>
     )
-}
+})

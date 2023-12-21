@@ -1,47 +1,105 @@
+import { useEffect, useState } from "react";
 import { SelectPlayer } from "./SelectPlayer";
 import { AllyGamePart } from "./components/AllyGamePart";
 import { EnemyGamePart } from "./components/EnemyGamePart";
 import { ActionButtons } from "./components/actionButtons/ActionButtons";
+import { clientSocket } from "~/App";
+import { GameCard, GameState, PlayerDto } from "~/type/socket";
+import { SelectCards } from "./SelectCards";
+import { Box, Chip, Container } from "@mui/material";
+import { Check, LoaderIcon } from "lucide-react";
+import { useSelector } from "react-redux";
+import { AppState } from "~/store";
 
 
 const PlayPage = () => {
-    const gameState = {
-        NotStarting: {
+    const user_id = useSelector((state: AppState) => state.user.current_user_id);
+    const [gameState, setGameState] = useState<GameState>()
+    const [myCardList, setMyCardList] = useState<GameCard[]>([])
+    const [enemyCardList, setEnemyCardList] = useState<GameCard[]>([])
+    const [myPlayer, setMyPlayer] = useState<PlayerDto>()
+    const [enemyPlayer, setEnemyPlayer] = useState<PlayerDto>()
 
+    useEffect(() => {
+        clientSocket.on('update_game_room', (gameState) => {
+            setGameState(gameState)
+            if ('Playing' in gameState) {
+                const state = gameState.Playing.state;
+                const players = Object.entries(state.players)
+                const myPlayer = players.find(([, player]) => player.id === user_id)
+                setMyPlayer(myPlayer ? myPlayer[1] : undefined)
+                const enemyPlayer = players.find(([, player]) => player.id !== user_id)
+                setEnemyPlayer(enemyPlayer ? enemyPlayer[1] : undefined)
+                if (myPlayer) setMyCardList(myPlayer[1].cards)
+                if (enemyPlayer) setEnemyCardList(enemyPlayer[1].cards)
+            }
+        })
+        return () => {
+            clientSocket.off('update_game_room')
         }
-    }
+    }, [])
 
-    let cardList1 = [
-        { "name": "name7", "description": "description7", "family": "family7", "affinity": "affinity7", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 8, "energy": 100.0, "hp": 69.85465, "defence": 62.35078, "attack": 20.590729, "price": 5055.923, "userId": 6 },
-        { "name": "name1", "description": "description1", "family": "family1", "affinity": "affinity1", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 7, "energy": 100.0, "hp": 96.64132, "defence": 32.886475, "attack": 21.639204, "price": 5023.34, "userId": 6 },
-        { "name": "name4", "description": "description4", "family": "family4", "affinity": "affinity4", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 9, "energy": 100.0, "hp": 99.89015, "defence": 76.53059, "attack": 18.486088, "price": 5898.136, "userId": 6 },
-        { "name": "name6", "description": "description6", "family": "family6", "affinity": "affinity6", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 10, "energy": 100.0, "hp": 20.050669, "defence": 13.567281, "attack": 39.464188, "price": 3461.6426, "userId": 6 },
-        { "name": "name2", "description": "description2", "family": "family2", "affinity": "affinity2", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 11, "energy": 100.0, "hp": 87.58064, "defence": 6.536448, "attack": 5.712211, "price": 3996.586, "userId": 6 },
-    ]
-
-    let cardList2 = [
-        { "name": "name1", "description": "description1", "family": "family1", "affinity": "affinity1", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 7, "energy": 100.0, "hp": 96.64132, "defence": 32.886475, "attack": 21.639204, "price": 5023.34, "userId": 6 },
-        { "name": "name2", "description": "description2", "family": "family2", "affinity": "affinity2", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 11, "energy": 100.0, "hp": 87.58064, "defence": 6.536448, "attack": 5.712211, "price": 3996.586, "userId": 6 },
-        { "name": "name4", "description": "description4", "family": "family4", "affinity": "affinity4", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 9, "energy": 100.0, "hp": 99.89015, "defence": 76.53059, "attack": 18.486088, "price": 5898.136, "userId": 6 },
-        { "name": "name6", "description": "description6", "family": "family6", "affinity": "affinity6", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 8, "energy": 100.0, "hp": 69.85465, "defence": 62.35078, "attack": 20.590729, "price": 5055.923, "userId": 6 },
-        { "name": "name7", "description": "description7", "family": "family7", "affinity": "affinity7", "imgUrl": "http://medias.3dvf.com/news/sitegrab/gits2045.jpg", "smallImgUrl": "https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/89858/05.jpg", "id": 10, "energy": 100.0, "hp": 20.050669, "defence": 13.567281, "attack": 39.464188, "price": 3461.6426, "userId": 6 },
-    ]
-
-    // socket.on("game_state", (data) => setGameData(data))
-
+    if (!gameState) return (
+        <SelectPlayer />
+    )
 
     return (
         <>
             {('Playing' in gameState) ? (
                 <>
-                    <EnemyGamePart cardList={cardList1}></EnemyGamePart>
-                    <ActionButtons></ActionButtons>
-                    <AllyGamePart cardList={cardList2}></AllyGamePart>
+                    <EnemyGamePart cardList={enemyCardList} user={enemyPlayer} />
+                    <ActionButtons />
+                    <AllyGamePart cardList={myCardList} user={myPlayer} />
                 </>
 
-            ) : (
-                <SelectPlayer />
-            )}
+            ) : ('Choosing' in gameState) ? (
+                <SelectCards game_id={gameState.Choosing.game_id}></SelectCards>
+            ) : ('NotStarted' in gameState) ? (
+                <Container component="div">
+                    <Box
+                        sx={{
+                            marginTop: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h1> Waiting for players to connect </h1>
+                        <h2>Game id :  {gameState.NotStarted.game_id} </h2>
+                        <h2>Players : {gameState.NotStarted.players.map(player => player.name)} </h2>
+                    </Box>
+                </Container>
+            ) : ('Waiting' in gameState) ? (
+                <Container component="div">
+                    <Box
+                        sx={{
+                            marginTop: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h1> Waiting for players to choose cards </h1>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                width: '50%',
+                                gap: 1
+                            }}>
+                            {gameState.Waiting.players.map(player => (
+                                <Chip sx={
+                                    {
+                                        width: '30%',
+                                    }
+                                } key={player.id} label={player.name} color={player.ready ? "success" : "warning"} icon={player.ready ? <Check /> : <LoaderIcon />} />
+                            ))}
+                        </Box>
+
+                    </Box>
+                </Container>
+            ) : (<>{JSON.stringify(gameState)}</>)}
         </>
     )
 }
