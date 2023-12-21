@@ -1,14 +1,14 @@
 version: "3"
 services:
-  frontend:
+   frontend:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        host: ${HOST}
+        host: localhost
     restart: always
     environment:
-      - SERVER_NAME=${HOST}
+      - SERVER_NAME=localhost
       - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.conf
     volumes:
       - ./nginx.conf:/etc/nginx/templates/default.conf.conf:ro
@@ -16,3 +16,4 @@ services:
     ports:
       - 80:80
       - 443:443
+  
