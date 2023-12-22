@@ -2,13 +2,18 @@ import { Card, CardActionArea, CardContent, CardMedia, Divider, ListItem, Stack,
 import { memo } from "react";
 import { CardType } from "~/type/card";
 
-export const CardSimple = memo(({ card }: { card?: CardType }) => {
+export const CardSimple = memo(({ card, state }: { card?: CardType, state?: "ALIVE" | "DEAD" }) => {
 
-    console.log(card)
     if (!card) return null
 
     return (
-        <Card sx={{ width: 150 }}>
+        <Card sx={{
+            width: 150,
+            bgcolor: state ? state === "ALIVE" ? "lawngreen" : "orange" : "lightgray",
+            boxShadow: 2,
+            borderRadius: 2,
+            margin: 1
+        }}>
             <CardActionArea>
                 <CardMedia
                     component="img"

@@ -1,7 +1,8 @@
 import { Avatar, Box, Card, CardContent, Grid, LinearProgress, ListItem, Typography } from "@mui/material";
+import { memo } from "react";
 import { PlayerDto } from "~/type/socket";
 
-export const PlayerOverview = ({ user }: { user: PlayerDto }) => {
+export const PlayerOverview = memo(({ user }: { user: PlayerDto }) => {
 
     console.log({ PlayerOverview: user })
 
@@ -34,4 +35,4 @@ export const PlayerOverview = ({ user }: { user: PlayerDto }) => {
             </CardContent>
         </Card>
     )
-}
+})

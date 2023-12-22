@@ -10,6 +10,7 @@ import { Box, Chip, Container } from "@mui/material";
 import { Check, LoaderIcon } from "lucide-react";
 import { useSelector } from "react-redux";
 import { AppState } from "~/store";
+import { AcceptDialog } from "./components/AcceptDialog";
 
 
 const PlayPage = () => {
@@ -19,6 +20,8 @@ const PlayPage = () => {
     const [enemyCardList, setEnemyCardList] = useState<GameCard[]>([])
     const [myPlayer, setMyPlayer] = useState<PlayerDto>()
     const [enemyPlayer, setEnemyPlayer] = useState<PlayerDto>()
+    const [attackCard, setAttackCard] = useState<number>()
+    const [targetCard, setTargetCard] = useState<number>()
 
     useEffect(() => {
         clientSocket.on('update_game_room', (gameState) => {
@@ -40,16 +43,19 @@ const PlayPage = () => {
     }, [])
 
     if (!gameState) return (
-        <SelectPlayer />
+        <>
+            <SelectPlayer />
+            <AcceptDialog />
+        </>
     )
 
     return (
         <>
             {('Playing' in gameState) ? (
                 <>
-                    <EnemyGamePart cardList={enemyCardList} user={enemyPlayer} />
-                    <ActionButtons />
-                    <AllyGamePart cardList={myCardList} user={myPlayer} />
+                    <EnemyGamePart setTarget={setTargetCard} cardList={enemyCardList} user={enemyPlayer} turn={gameState.Playing.state.turn} />
+                    <ActionButtons turn={gameState.Playing.state.turn} gameId={gameState.Playing.state.id} attackCard={attackCard} targetCard={targetCard} />
+                    <AllyGamePart setAttack={setAttackCard} cardList={myCardList} user={myPlayer} turn={gameState.Playing.state.turn} />
                 </>
 
             ) : ('Choosing' in gameState) ? (

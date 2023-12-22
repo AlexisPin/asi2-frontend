@@ -4,7 +4,6 @@ import { clientSocket } from "~/App";
 import { useSelector } from "react-redux";
 import { AppState } from '~/store';
 import { useEffect, useState } from "react";
-import { AcceptDialog } from "./components/AcceptDialog";
 
 
 export const SelectPlayer = () => {
@@ -12,16 +11,12 @@ export const SelectPlayer = () => {
     const user = useSelector((state: AppState) => state.user.current_user);
 
     useEffect(() => {
-        clientSocket.on('request_game_room', (gameRoomId, name) => {
-            console.log(`gameRoomId: ${gameRoomId}, name: ${name}`)
-        })
         clientSocket.on('notification', (message) => {
             if (message === 'users_change') {
                 setUpdateUsers(prev => !prev)
             }
         })
         return () => {
-            clientSocket.off('request_game_room')
             clientSocket.off('notification')
         }
     }, [])
@@ -70,7 +65,6 @@ export const SelectPlayer = () => {
                 </Stack>
             </Box>
         </Container>
-        <AcceptDialog />
     </>
     )
 }
