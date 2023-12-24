@@ -1,17 +1,26 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store';
 import { CardType } from '~/type/card';
+import { update_transaction_state } from '~/slices/shopSlice';
 
 export const useGetUserCard = () => {
   const [cards, setCards] = useState<CardType[]>([]);
+  const [isFirstExecution, setIsFirstExecution] = useState(true);
 
   const user = useSelector((state: AppState) => {
     return state.user.current_user;
   });
 
+  const transactionState = useSelector((state: AppState) => {
+    return state.shop.transaction_state;
+  });
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const card_ids = user?.cardList || [];
+    if (transactionState === 'success' || isFirstExecution) {
+      const card_ids = user?.cardList || [];
 
       Promise.all(
         card_ids.map(async (id: number) => {
@@ -23,10 +32,14 @@ export const useGetUserCard = () => {
           }
         }),
       ).then((cards) => {
-        // TODO validate cards
+        if (isFirstExecution) {
+          setIsFirstExecution(false);
+        }
+        dispatch(update_transaction_state(''));
         setCards(cards);
       });
-  }, [user]);
+    }
+  }, [user, isFirstExecution, transactionState, dispatch]);
 
   return cards;
 };

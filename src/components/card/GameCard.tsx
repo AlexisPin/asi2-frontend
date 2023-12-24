@@ -1,11 +1,21 @@
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { useCardInfo } from './hooks/useCardInfo';
+import { update_transaction_state } from '~/slices/shopSlice';
+import { update_current_user } from '~/slices/userSlice';
 
-export const GameCard = ({ id }: { id: number }) => {
+export const GameCard = ({
+  id,
+  setSelectedCard,
+}: {
+  id: number;
+  setSelectedCard: React.Dispatch<React.SetStateAction<number>>;
+}) => {
   const card = useCardInfo(id);
+
+  const dispatch = useDispatch();
 
   const shopState = useSelector((state: AppState) => {
     return state.shop.shop_state;
@@ -26,6 +36,20 @@ export const GameCard = ({ id }: { id: number }) => {
         card_id: id,
       }),
     });
+    const isCardBought = await response.json();
+    dispatch(update_transaction_state(isCardBought ? 'success' : 'error'));
+    if (isCardBought) {
+      setSelectedCard(-1);
+      const userResponse = await fetch(`http://localhost:8083/user/${user_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const newUser = await userResponse.json();
+      dispatch(update_current_user(newUser));
+    }
+
     if (!response.ok) {
       throw new Error('Error buying card');
     }
@@ -42,19 +66,36 @@ export const GameCard = ({ id }: { id: number }) => {
         card_id: id,
       }),
     });
+    const isCardSold = await response.json();
+    dispatch(update_transaction_state(isCardSold ? 'success' : 'error'));
+
+    if (isCardSold) {
+      const userResponse = await fetch(`http://localhost:8083/user/${user_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const newUser = await userResponse.json();
+      dispatch(update_current_user(newUser));
+      setSelectedCard(-1);
+    }
+
     if (!response.ok) {
       throw new Error('Error selling card');
     }
   };
 
-  if (!card) {
+  if (!card || id === -1) {
     return null;
   }
+
   return (
     <Card
       sx={{
         width: 345,
         margin: '24px',
+        maxHeight: '400px',
       }}
     >
       <CardMedia sx={{ height: 200 }} image={card.imgUrl} title={card.name} />
